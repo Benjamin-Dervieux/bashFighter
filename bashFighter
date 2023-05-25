@@ -1,0 +1,57 @@
+function attaque_1 () {
+        if [ $1 -eq 1 ]; then
+                pv_player_2=$(($pv_player_2-5))
+                echo "Player 2 à $pv_player_2 PV"
+        else
+                pv_player_1=$(($pv_player_1-5))
+                echo "Player 1 à $pv_player_1 PV"
+        fi
+}
+
+function attaque_2() {
+        if [ $1 -eq 1 ]; then
+                pv_player_2=$(($pv_player_2-2))
+                echo "Player 2 à $pv_player_2 PV"
+        else
+                pv_player_1=$(($pv_player_1-2))
+                echo "Player 1 à $pv_player_1 PV"
+        fi
+}
+
+function combat() {
+        echo "=== JOUEUR $1 ==="
+        echo "Selection d'attaque : 1) Boule de feu 2) Coup de boule"
+        echo -n "-> "
+        read attaque
+        echo -n "Joueur $1 attaque : "
+        if [ $attaque -eq 1 ]; then
+                echo "Boule de feu"
+                attaque_1 $1
+        elif [ $attaque -eq 2 ]; then
+                echo "Coup de boule"
+                attaque_2 $1
+        else
+                echo "c'est mort ...."
+        fi
+}
+
+
+function game() {
+        pv_player_1=10
+        pv_player_2=10
+
+        current_player=1
+        while [ $pv_player_1 -gt 0 ] && [ $pv_player_2 -gt 0 ]
+        do
+                combat $current_player
+                read input
+                if [ $current_player -eq 1 ]; then
+                        current_player=2
+                else
+                        current_player=1
+                fi
+        done
+        echo "GAME OVER"
+}
+
+game
